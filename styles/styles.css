@@ -85,6 +85,41 @@ body {
     font-size: 150%;
     padding: 10px;
     border-radius: 10px;
+    outline: none;
+}
+
+#formularioLancamento {
+    margin-top: 40px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    font-family: "padrao";
+}
+
+#formularioLancamento input {
+    display: block;
+    margin: 5px 0px 20px 0px;
+    border: 1px solid #cccccc;
+    height: 30px;
+    border-radius: 5px;
+    font-family: "padrao";
+    font-size: 110%;
+    padding-left: 10px;
+}
+
+#descricao {
+    width: 70%;
+}
+
+#botaoLancar {
+    border: none;
+    outline: none;
+    background-color: var(--cor-destaque);
+    color: #ffffff;
+    font-family: "negrito";
+    padding: 10px 20px;
+    font-size: 130%;
+    border-radius: 5px;
 }
 
 #areaLancamentos {
@@ -145,5 +180,4 @@ body {
 
 #renda {
     font-size: 500%;
-    color: var(--cor-destaque);
 }
