@@ -1,6 +1,3 @@
-/*
-*Seletor de elementos da página
-*/
 let $ = document.querySelector.bind(document);
 
 function alternarFormulario() {
@@ -14,10 +11,10 @@ function alternarFormulario() {
         texto.data.trim() === 'Esconder' ? 'Novo lançamento' : 'Esconder';
 }
 
-/*
-*Tratativa de lançamentos
-*/
-let lancamentos = [];
+let lancamentosArmazenados = localStorage.getItem('lancamentos');
+let lancamentos = 
+    lancamentosArmazenados ? JSON.parse(lancamentosArmazenados) : [];
+renderizarLancamentos();
 
 function lancar (event) {
     event.preventDefault();
@@ -29,9 +26,14 @@ function lancar (event) {
     };
 
     lancamentos.push(lancamento);
+    armazenarLancamentos();
     limparFormulario();
     renderizarLancamentos();
     $('#valor').focus();
+} 
+
+function armazenarLancamentos() {
+    localStorage.setItem('lancamentos', JSON.stringify(lancamentos));
 }
 
 function limparFormulario() {
