@@ -11,16 +11,51 @@ function alternarFormulario() {
         texto.data.trim() === 'Esconder' ? 'Novo lançamento' : 'Esconder';
 }
 
+const opcoesGrafico = {
+    responsive: true,
+				title: {
+					display: true,
+					text: 'Dinheiro em caixa'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Dias'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Renda'
+						}
+					}]
+				}
+};
+
 let lancamentosArmazenados = localStorage.getItem('lancamentos');
 let lancamentos = 
     lancamentosArmazenados ? JSON.parse(lancamentosArmazenados) : [];
 renderizarLancamentos();
+renderizarGrafico();
 
 function lancar (event) {
     event.preventDefault();
 
+    const multiplicadorValor = $('#gasto').checked ? -1 : 1;
+
     let lancamento = {
-        valor: parseFloat($('#valor').value),
+        valor: parseFloat($('#valor').value) * multiplicadorValor,
         descricao: $('#descricao').value,
         dataLancamento: $('#dataLancamento').value,
     };
@@ -29,8 +64,47 @@ function lancar (event) {
     armazenarLancamentos();
     limparFormulario();
     renderizarLancamentos();
+    renderizarGrafico();
     $('#valor').focus();
 } 
+
+function renderizarGrafico() {
+    if(lancamentos) {
+        const lancamentosOrdenados = 
+            lancamentos.sort((a, b) =>a.dataLancamento - b.dataLancamento);
+            
+        let datas = [];
+        let valores = [];
+        let valorAtual = 0;
+        lancamentos.forEach(lancamento => {
+            const data = 
+                new Date(lancamento.dataLancamento).toLocaleDateString();
+            datas.push(data);
+
+            valorAtual += lancamento.valor;
+            valores.push(valorAtual);
+        });
+
+            const corCurva = valorAtual < 0 ? 'red' : 'blue';
+            const config = {
+                type: 'line',
+                data: {
+                    labels: datas,
+                    datasets: [{
+                        label: 'Comportamento do seu dinheiro',
+                        backgroundColor: corCurva,
+                        borderColor: corCurva,
+                        data: valores,
+                        fill: false
+                    }]
+                },
+                options: opcoesGrafico
+            };
+
+        const contexto = $('#graficoLancamentos').getContext('2d');
+        new Chart(contexto, config);
+    }
+}
 
 function armazenarLancamentos() {
     localStorage.setItem('lancamentos', JSON.stringify(lancamentos));

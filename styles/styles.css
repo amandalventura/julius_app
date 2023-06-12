@@ -109,6 +109,23 @@ body {
     padding-left: 10px;
 }
 
+#blocoTipoLancamento {
+    margin: 5px 0px 20px 0px;
+}
+
+#blocoTipoLancamento input {
+    display: inline;
+    margin: 0px 0px;
+    vertical-align: middle;
+}
+
+#blocoTipoLancamento label {
+    vertical-align: middle;
+    font-family: "negrito";
+    font-size: 120%;
+    margin-right: 10px;
+}
+
 #descricao {
     width: 70%;
 }
